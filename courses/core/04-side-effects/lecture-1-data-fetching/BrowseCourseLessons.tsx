@@ -18,8 +18,20 @@ export function BrowseCourseLessons() {
   const lessons = course && course.lessons
   const isLoading = course === null
 
-  // Load Course and Lesson Data
-  // api.courses.getCourse(courseSlug)
+  // "stable" - means it doesn't change between renders (===)
+
+  // Any variables that you are "closing over" that can change
+  useEffect(() => {
+    let isCurrent = true
+    api.courses.getCourse(courseSlug).then((course) => {
+      if (isCurrent) {
+        setCourse(course)
+      }
+    })
+    return () => {
+      isCurrent = false
+    }
+  }, [courseSlug])
 
   function removeLesson(lessonId: number) {
     // if (!lessons) return

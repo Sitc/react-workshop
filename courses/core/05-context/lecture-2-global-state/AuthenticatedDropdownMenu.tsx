@@ -1,14 +1,11 @@
 import { Menu, MenuList, MenuButton, MenuItem } from '@reach/menu-button'
 import { api } from 'course-platform/utils/api'
 import { Avatar } from 'course-platform/Avatar'
-// import { useAuthContext } from './AuthContext'
+import { useAuthContext } from './AuthContext'
 
-// Temporary
-type Props = {
-  [key: string]: any
-}
+export function AuthenticatedDropdownMenu() {
+  const { user, logout } = useAuthContext()
 
-export function AuthenticatedDropdownMenu({ user, logout }: Props) {
   function onLogout() {
     api.auth.logout().then(logout)
   }

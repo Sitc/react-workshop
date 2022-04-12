@@ -19,54 +19,16 @@ import { LessonProfile } from 'course-platform/LessonProfile'
 export function App() {
   const navigate = useNavigate()
 
-  /****************************************
-    Authentication
-  *****************************************/
-
-  // Keep track of the logged-in user
-  const [authenticated, setAuthenticated] = useState<boolean | null>(null)
-  const [user, setUser] = useState<User | null>(null)
-
-  const login = (user: User) => {
-    setAuthenticated(true)
-    setUser(user)
-
-    // Redirect
-    navigate('/admin')
-  }
-
-  function logout() {
-    setAuthenticated(false)
-    setUser(null)
-  }
-
-  useEffect(() => {
-    let isCurrent = true
-    api.auth.getAuthenticatedUser().then((user: User) => {
-      if (user && isCurrent) {
-        login(user)
-      } else {
-        logout()
-      }
-    })
-    return () => {
-      isCurrent = false
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
-  /****************************************
-    Router
-  *****************************************/
+  function onSuccess(user) {}
 
   // prettier-ignore
   return (
     <Routes>
-      <Route path="/" element={<WebsiteLayout authenticated={authenticated} user={user} logout={logout} />}>
+      <Route path="/" element={<WebsiteLayout />}>
         <Route index element={<HomePage />} />
-        <Route path="login" element={<Login onSuccess={login} />} />
+        <Route path="login" element={<Login onSuccess={onSuccess} />} />
       </Route>
-      <Route path="admin" element={<AppLayout authenticated={authenticated} user={user} logout={logout} />}>
+      <Route path="admin" element={<AppLayout  />}>
         <Route index element={<Navigate replace to="courses" />} />
         <Route path="courses" element={<CoursesSubLayout />}>
           <Route index element={<BrowseCourses />} />

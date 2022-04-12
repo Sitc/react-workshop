@@ -27,3 +27,13 @@ export function DateDay({ format = 'DD' }) {
   const { date } = useContext(DateContext)
   return <>{date.format(format)}</>
 }
+
+export function SimpleDateDisplay() {
+  return (
+    <DateDisplay>
+      <DateMonth format="MMMM" />
+      <DateDay />
+      <DateYear />
+    </DateDisplay>
+  )
+}
