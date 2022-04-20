@@ -42,7 +42,6 @@ export function ChatPage() {
           setMessages((messages) => {
             return (messages || []).concat(newMessages)
           })
-
           // Renew this timestamp to cause the next render
           // to destroy the previous subscription and create
           // a new one

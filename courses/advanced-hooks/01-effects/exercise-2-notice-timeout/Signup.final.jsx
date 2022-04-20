@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Avatar } from 'course-platform/Avatar'
 import { Heading } from 'course-platform/Heading'
 import { Notice } from 'course-platform/Notice'
@@ -26,7 +26,7 @@ export function useDelayedCallback(cb) {
         clearTimeout(id)
       }
     }
-  }, [state, cb, ms])
+  }, [state, ms])
 
   return queueState
 }
@@ -40,7 +40,7 @@ export const Signup = () => {
 
   // Notice with Timeout
   const [showNotice, setShowNotice] = useState()
-  const setShowNoticeDelayed = useDelayedCallback(setShowNotice)
+  const setShowNoticeDelayed = useDelayedCallback((s) => setShowNotice(s))
 
   // Other State
   const [loadingAvatar, setLoadingAvatar] = useState(false)
@@ -79,7 +79,7 @@ export const Signup = () => {
             {showNotice && <Notice>Form has been submitted</Notice>}
 
             <div>
-              <label for="full-name">Full Name</label>
+              <label htmlFor="full-name">Full Name</label>
               <input
                 type="text"
                 className="form-field"
@@ -89,7 +89,7 @@ export const Signup = () => {
               />
             </div>
             <div>
-              <label for="full-name">Username</label>
+              <label htmlFor="full-name">Username</label>
               <input
                 type="text"
                 className="form-field"
@@ -102,7 +102,7 @@ export const Signup = () => {
               />
             </div>
             <div>
-              <label for="full-name">Full Name</label>
+              <label htmlFor="full-name">Full Name</label>
               <input
                 type="text"
                 className="form-field"

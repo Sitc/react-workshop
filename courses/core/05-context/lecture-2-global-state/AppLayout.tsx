@@ -5,14 +5,11 @@ import { Logo } from 'course-platform/Logo'
 import { AuthenticatedDropdownMenu } from './AuthenticatedDropdownMenu'
 import { Icon } from 'course-platform/Icon'
 import styles from '../../../../apps/course-platform/AppLayout/AppLayout.module.scss'
-// import { useAuthContext } from './AuthContext'
+import { useAuthContext } from './AuthContext'
 
-// Temporary
-type Props = {
-  [key: string]: any
-}
+export function AppLayout() {
+  const { authenticated } = useAuthContext()
 
-export function AppLayout({ authenticated, user, logout }: Props) {
   if (authenticated === false) {
     return <Navigate to="/login" replace />
   }
@@ -30,7 +27,7 @@ export function AppLayout({ authenticated, user, logout }: Props) {
           </Link>
         </div>
         <nav>
-          <AuthenticatedDropdownMenu user={user} logout={logout} />
+          <AuthenticatedDropdownMenu />
         </nav>
       </header>
       <div className="flex-1 flex">

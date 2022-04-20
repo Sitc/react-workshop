@@ -2,6 +2,7 @@ import { createContext, useState, useEffect, useCallback } from 'react'
 import { api } from 'course-platform/utils/api'
 import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom'
 import type { User } from 'course-platform/utils/types'
+import { useAuthContext } from './AuthContext'
 
 // Layouts
 import { WebsiteLayout } from './WebsiteLayout'
@@ -18,28 +19,9 @@ import { LessonProfile } from 'course-platform/LessonProfile'
 
 export function App() {
   const navigate = useNavigate()
+  const { login, logout } = useAuthContext()
 
-  /****************************************
-    Authentication
-  *****************************************/
-
-  // Keep track of the logged-in user
-  const [authenticated, setAuthenticated] = useState<boolean | null>(null)
-  const [user, setUser] = useState<User | null>(null)
-
-  const login = (user: User) => {
-    setAuthenticated(true)
-    setUser(user)
-
-    // Redirect
-    navigate('/admin')
-  }
-
-  function logout() {
-    setAuthenticated(false)
-    setUser(null)
-  }
-
+  // Any variable (even functions) that we close over that can change
   useEffect(() => {
     let isCurrent = true
     api.auth.getAuthenticatedUser().then((user: User) => {
@@ -52,8 +34,12 @@ export function App() {
     return () => {
       isCurrent = false
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [login, logout])
+
+  function onSuccess(user: any) {
+    login(user)
+    navigate('/admin')
+  }
 
   /****************************************
     Router
@@ -62,11 +48,11 @@ export function App() {
   // prettier-ignore
   return (
     <Routes>
-      <Route path="/" element={<WebsiteLayout authenticated={authenticated} user={user} logout={logout} />}>
+      <Route path="/" element={<WebsiteLayout  />}>
         <Route index element={<HomePage />} />
-        <Route path="login" element={<Login onSuccess={login} />} />
+        <Route path="login" element={<Login onSuccess={onSuccess} />} />
       </Route>
-      <Route path="admin" element={<AppLayout authenticated={authenticated} user={user} logout={logout} />}>
+      <Route path="admin" element={<AppLayout  />}>
         <Route index element={<Navigate replace to="courses" />} />
         <Route path="courses" element={<CoursesSubLayout />}>
           <Route index element={<BrowseCourses />} />

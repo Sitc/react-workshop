@@ -5,8 +5,24 @@ import { Notice } from 'course-platform/Notice'
 
 export function useDelayedCallback(cb) {
   const [state, setState] = useState(null)
+  const [ms, setMs] = useState(0)
 
-  function queueState(state, ms) {}
+  function queueState(state, ms) {
+    setState(state)
+    setMs(ms)
+  }
+
+  useEffect(() => {
+    if (state !== null) {
+      const id = setTimeout(() => {
+        cb(state)
+      }, ms)
+      return () => {
+        clearTimeout(id)
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ms, state])
 
   return queueState
 }
@@ -19,8 +35,8 @@ export const Signup = () => {
   const [avatarUrl, setAvatarUrl] = useState('')
 
   // Notice with Timeout
-  const [showNotice, setShowNotice] = useState()
-  // const setShowNoticeDelayed = useDelayedCallback(setShowNotice)
+  const [showNotice, setShowNotice] = useState(false)
+  const setShowNoticeDelayed = useDelayedCallback(setShowNotice)
 
   // Other State
   const [loadingAvatar, setLoadingAvatar] = useState(false)
@@ -28,7 +44,7 @@ export const Signup = () => {
   function onSubmit(e) {
     e.preventDefault()
     setShowNotice(true)
-    // setShowNoticeDelayed(false, 2000)
+    setShowNoticeDelayed(false, 2000)
   }
 
   function fetchAvatar(username) {
@@ -59,7 +75,7 @@ export const Signup = () => {
             {showNotice && <Notice>Form has been submitted</Notice>}
 
             <div>
-              <label for="full-name">Full Name</label>
+              <label htmlFor="full-name">Full Name</label>
               <input
                 type="text"
                 className="form-field"
@@ -69,7 +85,7 @@ export const Signup = () => {
               />
             </div>
             <div>
-              <label for="full-name">Username</label>
+              <label htmlFor="full-name">Username</label>
               <input
                 type="text"
                 className="form-field"
@@ -82,7 +98,7 @@ export const Signup = () => {
               />
             </div>
             <div>
-              <label for="full-name">Full Name</label>
+              <label htmlFor="full-name">Full Name</label>
               <input
                 type="text"
                 className="form-field"

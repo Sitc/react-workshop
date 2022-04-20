@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from 'react'
+import { createContext, useContext, useState, useEffect, useCallback } from 'react'
 import { api } from 'course-platform/utils/api'
 import type { User } from 'course-platform/utils/types'
 
@@ -15,29 +15,29 @@ export const AuthProvider: React.FC = ({ children }) => {
   const [authenticated, setAuthenticated] = useState<boolean | null>(null)
   const [user, setUser] = useState<User | null>(null)
 
-  const login = (user: User) => {
+  const login = useCallback((user: User) => {
     setAuthenticated(true)
     setUser(user)
-  }
+  }, [])
 
-  const logout = () => {
+  const logout = useCallback(() => {
     setAuthenticated(false)
     setUser(null)
-  }
-
-  useEffect(() => {
-    let isCurrent = true
-    api.auth.getAuthenticatedUser().then((user: User) => {
-      if (user && isCurrent) {
-        login(user)
-      } else {
-        logout()
-      }
-    })
-    return () => {
-      isCurrent = false
-    }
   }, [])
+
+  // useEffect(() => {
+  //   let isCurrent = true
+  //   api.auth.getAuthenticatedUser().then((user: User) => {
+  //     if (user && isCurrent) {
+  //       login(user)
+  //     } else {
+  //       logout()
+  //     }
+  //   })
+  //   return () => {
+  //     isCurrent = false
+  //   }
+  // }, [])
 
   const context: Context = {
     authenticated,

@@ -1,11 +1,15 @@
-import { useState, Component } from 'react'
+import { useState, PureComponent, memo, useMemo, useCallback } from 'react'
 
 export function App() {
   const [count, setCount] = useState(0)
 
-  // const onUpdate = () => {
-  //   console.log('User was updated')
-  // }
+  const onUpdate = useCallback(() => {
+    console.log('User was updated')
+  }, [])
+
+  const user = useMemo(() => {
+    return {}
+  }, [])
 
   return (
     <div className="text-center spacing">
@@ -14,29 +18,20 @@ export function App() {
         Count: {count}
       </button>
       <hr />
-      <UserProfile
-        userId={5}
-        // onUpdate={onUpdate}
-      />
+      <UserProfile user={user} onUpdate={onUpdate} />
     </div>
   )
 }
 
-class UserProfile extends Component {
-  // shouldComponentUpdate(nextProps) {
-  //   return true
-  // }
+const UserProfile = memo(() => {
+  console.log('Render')
 
-  render() {
-    console.log('Render')
-
-    return (
-      <div>
-        <h3>Child Component</h3>
-        <p className="text-small">
-          Check the console to see how many times I render when the owner state changes
-        </p>
-      </div>
-    )
-  }
-}
+  return (
+    <div>
+      <h3>Child Component</h3>
+      <p className="text-small">
+        Check the console to see how many times I render when the owner state changes
+      </p>
+    </div>
+  )
+})
