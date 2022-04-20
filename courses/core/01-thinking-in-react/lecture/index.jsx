@@ -9,3 +9,20 @@ import './styles.scss'
 // 2. "mount" the app to the DOM
 
 // Let's go
+
+function Icon() {}
+
+function Button() {}
+
+function ShoppingCartButton() {
+  function event() {}
+  return (
+    <Button>
+      <Icon />
+    </Button>
+  )
+}
+
+function App() {
+  return <ShoppingCartButton></ShoppingCartButton>
+}

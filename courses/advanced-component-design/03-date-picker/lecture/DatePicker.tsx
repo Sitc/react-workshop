@@ -13,12 +13,12 @@ type D = dayjs.Dayjs // smaller alias
 // we'll always store it as an array
 type SelectedDates = [] | [D] | [D, D]
 
-// type ContextType = {
-//   selectedDates: SelectedDates
-//   selectDate(date: D): void
-//   baseMonthFirst: D
-//   setBaseMonth(to: number | D): void
-// }
+type ContextType = {
+  selectedDates: SelectedDates
+  selectDate(date: D): void
+  baseMonthFirst: D
+  setBaseMonth(to: number | D): void
+}
 
 /****************************************
   DatePicker
@@ -32,9 +32,14 @@ type DatePickerProps = {
   onSelectDate?: (selectedDate: SelectedDates) => void
 }
 
-// const Context = createContext<ContextType>(null!)
+const Context = createContext<ContextType>(null!)
 
-export function DatePicker({ selectRange = false, baseMonth, onSelectDate }: DatePickerProps) {
+export function DatePicker({
+  children,
+  selectRange = false,
+  baseMonth,
+  onSelectDate,
+}: DatePickerProps) {
   const [selectedDates, setSelectedDates] = useState<SelectedDates>([])
 
   // A DateJS (D) Object for the first day of the month
@@ -62,14 +67,14 @@ export function DatePicker({ selectRange = false, baseMonth, onSelectDate }: Dat
     }
   }
 
-  return (
-    <DatePickerCalendar
-      selectedDates={selectedDates}
-      selectDate={selectDate}
-      baseMonthFirst={baseMonthFirst}
-      setBaseMonth={setBaseMonth}
-    />
-  )
+  const context: ContextType = {
+    selectedDates,
+    selectDate,
+    baseMonthFirst,
+    setBaseMonth,
+  }
+
+  return <Context.Provider value={context}>{children}</Context.Provider>
 }
 
 /****************************************
@@ -79,19 +84,10 @@ export function DatePicker({ selectRange = false, baseMonth, onSelectDate }: Dat
 type Offset = -1 | 0 | 1
 type DatePickerCalendarProps = {
   offset?: Offset
-  selectedDates: SelectedDates
-  selectDate(date: D): void
-  baseMonthFirst: D
-  setBaseMonth(to: number | D): void
 }
 
-export function DatePickerCalendar({
-  offset = 0,
-  selectedDates,
-  selectDate,
-  baseMonthFirst,
-  setBaseMonth,
-}: DatePickerCalendarProps) {
+export function DatePickerCalendar({ offset = 0 }: DatePickerCalendarProps) {
+  const { baseMonthFirst, selectDate, selectedDates } = useContext(Context)
   // The first day of the base month
   const theFirst = offset === 0 ? baseMonthFirst : baseMonthFirst.add(offset, 'month')
 
@@ -106,53 +102,47 @@ export function DatePickerCalendar({
   const style = { '--datePickerCalendarBoxOffset': dayOfWeek + 1 } as React.CSSProperties
 
   return (
-    <div className="spacing">
-      <button className="button" data-datepicker-change-month="" onClick={() => setBaseMonth(1)}>
-        Next Month
-      </button>
+    <div data-datepicker-calendar="" style={style}>
+      <div data-datepicker-calendar-dayofweek="">
+        <div>S</div>
+        <div>M</div>
+        <div>T</div>
+        <div>W</div>
+        <div>T</div>
+        <div>F</div>
+        <div>S</div>
+      </div>
+      <div data-datepicker-calendar-boxes="">
+        {[...Array(daysInMonth).keys()].map((n) => {
+          const day = n + 1
+          const dayPad = day.toString().padStart(2, '0')
+          const timeStamp = `${year}-${monthNumber}-${dayPad}`
+          const date = dayjs(timeStamp)
 
-      <div data-datepicker-calendar="" style={style}>
-        <div data-datepicker-calendar-dayofweek="">
-          <div>S</div>
-          <div>M</div>
-          <div>T</div>
-          <div>W</div>
-          <div>T</div>
-          <div>F</div>
-          <div>S</div>
-        </div>
-        <div data-datepicker-calendar-boxes="">
-          {[...Array(daysInMonth).keys()].map((n) => {
-            const day = n + 1
-            const dayPad = day.toString().padStart(2, '0')
-            const timeStamp = `${year}-${monthNumber}-${dayPad}`
-            const date = dayjs(timeStamp)
+          const selectedFirst = selectedDates[0] && date.isSame(selectedDates[0], 'day')
+          const selectedLast = selectedDates[1] && date.isSame(selectedDates[1], 'day')
+          const selected = selectedFirst || selectedLast
+          const isToday = today.isSame(date, 'day')
+          const isPast = today.isAfter(date, 'day')
 
-            const selectedFirst = selectedDates[0] && date.isSame(selectedDates[0], 'day')
-            const selectedLast = selectedDates[1] && date.isSame(selectedDates[1], 'day')
-            const selected = selectedFirst || selectedLast
-            const isToday = today.isSame(date, 'day')
-            const isPast = today.isAfter(date, 'day')
+          const between =
+            selectedDates.length === 2 && date.isBetween(selectedDates[0], selectedDates[1])
 
-            const between =
-              selectedDates.length === 2 && date.isBetween(selectedDates[0], selectedDates[1])
-
-            return (
-              <button
-                key={day}
-                data-selected={selected ? '' : undefined}
-                data-selected-first={selectedFirst ? '' : undefined}
-                data-selected-last={selectedLast ? '' : undefined}
-                data-today={isToday ? '' : undefined}
-                data-past={isPast ? '' : undefined}
-                data-between={between ? '' : undefined}
-                onClick={() => selectDate(date)}
-              >
-                <time dateTime={timeStamp}>{day}</time>
-              </button>
-            )
-          })}
-        </div>
+          return (
+            <button
+              key={day}
+              data-selected={selected ? '' : undefined}
+              data-selected-first={selectedFirst ? '' : undefined}
+              data-selected-last={selectedLast ? '' : undefined}
+              data-today={isToday ? '' : undefined}
+              data-past={isPast ? '' : undefined}
+              data-between={between ? '' : undefined}
+              onClick={() => selectDate(date)}
+            >
+              <time dateTime={timeStamp}>{day}</time>
+            </button>
+          )
+        })}
       </div>
     </div>
   )
@@ -162,34 +152,30 @@ export function DatePickerCalendar({
   DatePicker Navigation
 *****************************************/
 
-// type DatePickerChangeMonthProps = {
-//   children: React.ReactNode
-//   to: number | D
-// } & React.HTMLAttributes<HTMLButtonElement>
+type DatePickerChangeMonthProps = {
+  children: React.ReactNode
+  to: number | D
+} & React.HTMLAttributes<HTMLButtonElement>
 
-// export function DatePickerChangeMonth({ children, to, ...props }: DatePickerChangeMonthProps) {
-//   const { setBaseMonth } = useContext(Context)
-//   return (
-//     <button {...props} data-datepicker-change-month="" onClick={() => setBaseMonth(to)}>
-//       {children}
-//     </button>
-//   )
-// }
+export function DatePickerChangeMonth({ children, to, ...props }: DatePickerChangeMonthProps) {
+  const { setBaseMonth } = useContext(Context)
+  return (
+    <button {...props} data-datepicker-change-month="" onClick={() => setBaseMonth(to)}>
+      {children}
+    </button>
+  )
+}
 
 /****************************************
   Labels
 *****************************************/
 
-// type DatePickerLabelProps = {
-//   offset?: number
-//   format?: string
-// } & React.HTMLAttributes<HTMLDivElement>
+type DatePickerLabelProps = {
+  offset?: number
+  format?: string
+} & React.HTMLAttributes<HTMLDivElement>
 
-// export function DatePickerLabel({
-//   format = 'MMMM',
-//   offset = 0,
-//   ...props
-// }: DatePickerLabelProps) {
-//   const { baseMonthFirst } = useContext(Context)
-//   return <div {...props}>{baseMonthFirst.add(offset, 'month').format(format)}</div>
-// }
+export function DatePickerLabel({ format = 'MMMM', offset = 0, ...props }: DatePickerLabelProps) {
+  const { baseMonthFirst } = useContext(Context)
+  return <div {...props}>{baseMonthFirst.add(offset, 'month').format(format)}</div>
+}

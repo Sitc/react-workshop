@@ -85,8 +85,6 @@ export function FieldDateRangePicker({
   const targetRef = useRef<HTMLDivElement>(null!)
 
   // // Example: const [field, meta, helpers] = useField(name);
-  // const { setValue: setStartValue } = useField(startName)[2]
-  // const { setValue: setEndValue } = useField(endName)[2]
 
   const startData = useField(startName)
   const setStart = startData[2].setValue

@@ -1,15 +1,35 @@
 import {
   DatePicker,
-  // DatePickerCalendar,
-  // DatePickerChangeMonth,
-  // DatePickerLabel,
+  DatePickerCalendar,
+  DatePickerChangeMonth,
+  DatePickerLabel,
 } from './DatePicker'
 import './styles.scss'
 
 export function App() {
   return (
-    <div>
-      <DatePicker selectRange />
+    <div className="spacing">
+      <DatePicker selectRange>
+        <div className="flex flex-gap-large">
+          <div className="flex-1">
+            <DatePickerLabel />
+            <DatePickerCalendar />
+          </div>
+          <div className="flex-1">
+            <DatePickerLabel offset={1} />
+            <DatePickerCalendar offset={1} />
+          </div>
+        </div>
+        <hr />
+        <div className="flex-split">
+          <DatePickerChangeMonth to={-1} className="button">
+            Previous
+          </DatePickerChangeMonth>
+          <DatePickerChangeMonth to={1} className="button">
+            Next
+          </DatePickerChangeMonth>
+        </div>
+      </DatePicker>
     </div>
   )
 }
