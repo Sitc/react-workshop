@@ -1,5 +1,5 @@
 import * as React from 'react'
-import * as ReactDOM from 'react-dom'
+import * as ReactDOM from 'react-dom/client'
 import { Accordion, AccordionItem, AccordionButton, AccordionPanel } from './Accordion'
 import { FaAngleRight, FaAngleDown } from 'react-icons/fa'
 import './styles.scss'
@@ -11,12 +11,12 @@ function App() {
     <div>
       <p>
         Want to read more about{' '}
-        <button onClick={() => null} className="as-link">
+        <button onClick={() => setIndex(1)} className="button">
           a11y
         </button>
       </p>
 
-      <Accordion onChange={setIndex}>
+      <Accordion index={index} onChange={setIndex}>
         <AccordionItem>
           <AccordionButton>
             {index === 0 ? <FaAngleDown /> : <FaAngleRight />}

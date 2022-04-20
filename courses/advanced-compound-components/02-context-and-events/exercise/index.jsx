@@ -1,5 +1,5 @@
 import * as React from 'react'
-import * as ReactDOM from 'react-dom'
+import * as ReactDOM from 'react-dom/client'
 import { Disclosure, DisclosureButton, DisclosurePanel } from './Disclosure'
 import './styles.scss'
 
@@ -9,7 +9,13 @@ import './styles.scss'
 function App() {
   return (
     <Disclosure>
-      <DisclosureButton>Click Me</DisclosureButton>
+      <DisclosureButton
+        onClick={() => {
+          console.log('owner click')
+        }}
+      >
+        Click Me
+      </DisclosureButton>
       <DisclosurePanel>Panel Info</DisclosurePanel>
     </Disclosure>
   )

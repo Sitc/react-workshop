@@ -12,6 +12,7 @@ export function Disclosure({
 }) {
   const isControlled = controlledOpen != null
   const { current: startsControlled } = React.useRef(isControlled)
+
   if (isControlled !== startsControlled) {
     console.warn('Cannot change from controlled to uncontrolled or vice versa.')
   }

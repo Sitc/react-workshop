@@ -15,7 +15,7 @@ export const Accordion = React.forwardRef(
     const [selectedIndex, setSelectedIndex] = React.useState(defaultIndex)
     const accordionId = React.useId(id)
 
-    const isControlled = controlledIndex != null
+    const isControlled = !!controlledIndex || controlledIndex === 0
     const { current: startsControlled } = React.useRef(isControlled)
     if (isControlled !== startsControlled) {
       console.warn('Cannot change from controlled to uncontrolled or vice versa.')

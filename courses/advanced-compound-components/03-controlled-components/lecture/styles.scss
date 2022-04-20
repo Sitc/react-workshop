@@ -1,10 +1,6 @@
 @import 'course-platform/styles/all.scss';
 @import 'course-platform/styles/center-lesson.css';
 
-html {
-  font-size: 25pt;
-}
-
 [data-accordion-item] + [data-accordion-item] {
   margin-top: 0.2rem;
 }
