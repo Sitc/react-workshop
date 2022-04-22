@@ -22,7 +22,7 @@ export const Signup = () => {
 
   // Notice with Timeout
   const [showNotice, setShowNotice] = useState(false)
-  // const setShowNoticeDelayed = useDelayedCallback(setShowNotice)
+  const setShowNoticeDelayed = useDelayedCallback(setShowNotice)
 
   // Other State
   const [loadingAvatar, setLoadingAvatar] = useState(false)

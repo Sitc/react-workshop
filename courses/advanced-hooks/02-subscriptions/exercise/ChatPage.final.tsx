@@ -23,8 +23,8 @@ export function ChatPage() {
     api.chat.getMessages(THREAD_NAME).then((messages) => {
       if (isCurrent) {
         setMessages(messages)
-        setStartSubscription(Date.now())
       }
+      setStartSubscription(Date.now())
     })
     return () => {
       isCurrent = false
