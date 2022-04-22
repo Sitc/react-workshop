@@ -90,7 +90,7 @@ export function FieldDateRangePicker({
 
   // Example: const [field, meta, helpers] = useField(name);
   const startData = useField(startName)
-  const setStart = startData[2].setValue
+  const setStart = startData[2].setValue // formiks setter for setting start date
   const startValue = dayjs(startData[0].value).format('MMM D, YYYY')
 
   const endData = useField(endName)

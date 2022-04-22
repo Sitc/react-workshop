@@ -5,18 +5,11 @@ import { FaAngleRight, FaAngleDown } from 'react-icons/fa'
 import './styles.scss'
 
 function App() {
-  const [index, setIndex] = React.useState(0)
+  const [index, setIndex] = React.useState(1)
 
   return (
     <div>
-      <p>
-        Want to read more about{' '}
-        <button onClick={() => null} className="as-link">
-          a11y
-        </button>
-      </p>
-
-      <Accordion onChange={setIndex}>
+      <Accordion index={index} onChange={setIndex}>
         <AccordionItem>
           <AccordionButton>
             {index === 0 ? <FaAngleDown /> : <FaAngleRight />}

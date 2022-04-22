@@ -5,10 +5,10 @@ import { Disclosure, DisclosureButton, DisclosurePanel } from './Disclosure'
 import './styles.scss'
 
 function App() {
-  const [open, setOpen] = React.useState(false)
+  const [open, setOpen] = React.useState()
 
   return (
-    <Disclosure onChange={() => setOpen(!open)}>
+    <Disclosure open={open} onChange={() => setOpen(!open)}>
       <DisclosureButton>
         {open ? <FaAngleDown /> : <FaAngleRight />}
         <span>Click Me</span>
