@@ -10,7 +10,8 @@ export function Disclosure({
   defaultOpen = false,
   ...props
 }) {
-  const isControlled = controlledOpen != null
+  // passing a non-boolean means we are not controlled
+  const isControlled = controlledOpen === true || controlledOpen === false
   const { current: startedControlled } = React.useRef(isControlled)
   if (isControlled !== startedControlled) {
     console.warn('Cannot change from controlled to uncontrolled or vice versa.')

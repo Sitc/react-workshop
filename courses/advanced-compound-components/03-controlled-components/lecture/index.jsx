@@ -5,18 +5,11 @@ import { FaAngleRight, FaAngleDown } from 'react-icons/fa'
 import './styles.scss'
 
 function App() {
-  const [index, setIndex] = React.useState(0)
+  const [index, setIndex] = React.useState() // copy
 
   return (
     <div>
-      <p>
-        Want to read more about{' '}
-        <button onClick={() => null} className="as-link">
-          a11y
-        </button>
-      </p>
-
-      <Accordion onChange={setIndex}>
+      <Accordion index={index} onChange={setIndex}>
         <AccordionItem>
           <AccordionButton>
             {index === 0 ? <FaAngleDown /> : <FaAngleRight />}
@@ -42,7 +35,7 @@ function App() {
 
 /*
 ✅ It works, but needs some improvements...
-❌ Accordion cannot be "controlled" from the owner's state
+✅ Accordion cannot be "controlled" from the owner's state
 
 Problems with React.Children.map technique to get the index 
 that we'll fix later
