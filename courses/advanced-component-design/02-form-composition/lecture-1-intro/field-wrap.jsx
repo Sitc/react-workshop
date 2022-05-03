@@ -9,6 +9,14 @@ export function App() {
     console.log(values)
   }
 
+  const data = [
+    { field: 'FieldInput', type: 'email' }
+    { field: 'FieldSelect', type: 'email' }
+    { field: 'FieldInput', type: 'email' }
+    { field: 'FieldInput', type: 'email' }
+    { field: 'FieldInput', type: 'email' }
+  ]
+
   function handleValidation(values) {
     // Not a very good way to verify emails
     return values.email.search('@') < 0 ? { email: 'Invalid Email' } : null
@@ -17,9 +25,27 @@ export function App() {
   return (
     <Formik initialValues={initialValues} onSubmit={handleSubmit} validate={handleValidation}>
       <Form className="spacing">
-        <FieldEmail />
-        <FieldPassword />
-        {/* <FieldDatePicker /> */}
+        {data.map(f => {
+          
+          let Field = null
+
+          switch (f.field) {
+            case 'InputField':
+              Field = InputField
+              break;
+            case 'SelectField':
+              Field = SelectField
+              break;
+          
+            default:
+              break;
+          }
+
+
+          return <Field type={f.type} />
+
+        })}
+        
         <button type="submit" className="button">
           Submit
         </button>
@@ -32,27 +58,25 @@ export function App() {
  * Fields
  */
 
-function FieldEmail() {
-  const [field, meta] = useField('email')
-  const id = 'email'
+function FieldWrap({ children, name, label }) {
+  const [field, meta] = useField(name)
+  const id = useId()
   return (
     <div className="field-wrap spacing-small">
-      <label htmlFor={id}>Email</label>
-      <input {...field} id={id} type="email" autoComplete="off" className="form-field" />
+      <label htmlFor={id}>{label}</label>
+      {children({ ...field, id })}
       {meta.error && <p>{meta.error}</p>}
     </div>
   )
 }
 
-function FieldPassword() {
-  const [field, meta] = useField('password')
-  const id = 'password'
+function FieldInput({ name, label, type = 'text' }) {
   return (
-    <div className="field-wrap spacing-small">
-      <label htmlFor={id}>Password</label>
-      <input {...field} name="password" type="password" className="form-field" />
-      {meta.error && <p>{meta.error}</p>}
-    </div>
+    <FieldWrap name={name} label={label}>
+      {(field) => {
+        return <input {...field} type={type} autoComplete="off" className="form-field" />
+      }}
+    </FieldWrap>
   )
 }
 
