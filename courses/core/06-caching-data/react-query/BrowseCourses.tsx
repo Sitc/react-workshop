@@ -9,18 +9,23 @@ import { useCourses, useRemoveCourse } from './useCourses'
 import { queryClient } from './queryClient'
 import type { CourseWithLessons } from 'course-platform/utils/types'
 
-export function BrowseCourses() {
-  // 1. Previous Approach: Fetch in every component
-  // const { courses } = useCourses()
-
-  // 2. New Approach: Use React Query (useEffect and caching library)
+function useCourses(cache = true) {
   const {
     data: courses,
     isLoading,
     refetch,
   } = useQuery('courses', () => api.courses.getAll(), {
-    staleTime: 1000 * 30,
+    staleTime: cache ? 1000 * 30 : 0,
   })
+
+  return { courses, isLoading, refetch }
+}
+
+export function BrowseCourses() {
+  // 1. Previous Approach: Fetch in every component
+  // const { courses } = useCourses()
+
+  const { courses, isLoading, refetch } = useCourses(false)
 
   // // 3. New Approach tucked under custom hook abstraction
   // const { courses, isLoading, refetch } = useCourses()

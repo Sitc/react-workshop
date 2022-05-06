@@ -8,9 +8,7 @@ export function DateDisplay({ children, date }) {
     date: dayjs(date || new Date()),
   }
 
-  // This is a valid way to pass a the above children prop to the children prop
-  // of another component:
-  return <DateContext.Provider value={context} children={children} />
+  return <DateContext.Provider value={context}>{children}</DateContext.Provider>
 }
 
 export function DateYear({ format = 'YYYY' }) {

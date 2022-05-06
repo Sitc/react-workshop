@@ -6,17 +6,17 @@ import { AddCourse } from './AddCourse'
 export function BrowseCourses() {
   const [minLessons, setMinLessons] = useState(0)
 
-  const courses = [
+  const [courses, setCourses] = useState([
     { id: 1, name: 'React', lessons: 5 },
     { id: 2, name: 'JavaScript', lessons: 4 },
     { id: 3, name: 'CSS', lessons: 3 },
-  ]
+  ])
 
   return (
     <div className="card spacing">
       <AddCourse
         onSubmit={(values) => {
-          console.log(values)
+          setCourses(courses.concat(values))
         }}
       />
       <hr />

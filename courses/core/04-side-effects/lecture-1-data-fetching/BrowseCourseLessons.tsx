@@ -13,16 +13,27 @@ import type { CourseWithLessons } from 'course-platform/utils/types'
 // https://github.com/facebook/react/pull/22114
 
 export function BrowseCourseLessons() {
-  const courseSlug = useParams().courseSlug!
+  const courseSlug = useParams().courseSlug! // useState
   const [createLessonDialog, setCreateLessonDialog] = useState(false)
 
   // Course and Lesson Data
+
   const [course, setCourse] = useState<CourseWithLessons | null>(null)
   const lessons = course && course.lessons
   const isLoading = course === null
 
-  // Load Course and Lesson Data
-  // api.courses.getCourse(courseSlug)
+  // Any variable that we close over that CAN CHANGE!!!
+  useEffect(() => {
+    let isCurrent = true
+    api.courses.getCourse(courseSlug).then((course) => {
+      if (isCurrent) {
+        setCourse(course)
+      }
+    })
+    return () => {
+      isCurrent = false
+    }
+  }, [courseSlug]) // ===
 
   function removeLesson(lessonId: number) {
     // if (!lessons) return

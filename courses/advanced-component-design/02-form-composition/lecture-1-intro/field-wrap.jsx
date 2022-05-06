@@ -17,8 +17,8 @@ export function App() {
   return (
     <Formik initialValues={initialValues} onSubmit={handleSubmit} validate={handleValidation}>
       <Form className="spacing">
-        <FieldEmail />
-        <FieldPassword />
+        <FieldInput name="email" label="Email" />
+        <FieldInput name="password" label="Password" />
         {/* <FieldDatePicker /> */}
         <button type="submit" className="button">
           Submit
@@ -32,39 +32,39 @@ export function App() {
  * Fields
  */
 
-function FieldEmail() {
-  const [field, meta] = useField('email')
-  const id = 'email'
+function FieldWrap({ render, label, name }) {
+  const [field, meta] = useField(name)
+  const id = useId()
   return (
     <div className="field-wrap spacing-small">
-      <label htmlFor={id}>Email</label>
-      <input {...field} id={id} type="email" autoComplete="off" className="form-field" />
+      <label htmlFor={id}>{label}</label>
+      {render(field, id)}
       {meta.error && <p>{meta.error}</p>}
     </div>
   )
 }
 
-function FieldPassword() {
-  const [field, meta] = useField('password')
-  const id = 'password'
+function FieldInput({ name, label }) {
   return (
-    <div className="field-wrap spacing-small">
-      <label htmlFor={id}>Password</label>
-      <input {...field} name="password" type="password" className="form-field" />
-      {meta.error && <p>{meta.error}</p>}
-    </div>
+    <FieldWrap
+      name={name}
+      label={label}
+      render={(field, id) => {
+        return <input {...field} id={id} type="email" autoComplete="off" className="form-field" />
+      }}
+    />
   )
 }
 
-// function FieldDatePicker() {
-//   return (
-//     <div className="form-field-icon">
-//       <div className="form-field-icon-input-wrap">
-//         <input type="text" />
-//       </div>
-//       <div className="form-field-icon-wrap">
-//         <BsCalendar3 />
-//       </div>
-//     </div>
-//   )
-// }
+function FieldDatePicker() {
+  return (
+    <div className="form-field-icon">
+      <div className="form-field-icon-input-wrap">
+        <input type="text" />
+      </div>
+      <div className="form-field-icon-wrap">
+        <BsCalendar3 />
+      </div>
+    </div>
+  )
+}

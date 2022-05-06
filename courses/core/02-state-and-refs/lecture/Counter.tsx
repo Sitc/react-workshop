@@ -1,7 +1,7 @@
 // Read more about imports with React
 // https://twitter.com/dan_abramov/status/1308739731551858689
 
-import { useState, Fragment } from 'react'
+import { useState } from 'react'
 import { Icon } from 'course-platform/Icon'
 
 type CounterProps = {
@@ -28,7 +28,13 @@ export function Counter({ count, setCount, min = 0 }: CounterProps) {
           <Icon name="minus" />
         </button>
       </div>
-      <div className="input">{count}</div>
+      <input
+        type="text"
+        value={count}
+        onChange={(e) => {
+          setCount(parseInt(e.target.value))
+        }}
+      />
       <div>
         <button onClick={add} className="button button-small">
           <Icon name="plus" />

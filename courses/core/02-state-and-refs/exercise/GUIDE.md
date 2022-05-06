@@ -20,6 +20,8 @@ const [formValues, setFormValues] = useState({
   fullName: '',
   username: '',
 })
+
+setFormValues({ ...formValues, fullName: '' })
 ```
 
 Just keep in mind you now have to be careful when you call `setFormFields` because you need to keep all the object fields in place when you modify one field. For example if you want to modify the fullName:
