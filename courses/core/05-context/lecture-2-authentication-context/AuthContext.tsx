@@ -2,26 +2,26 @@ import { createContext, useContext, useReducer, useEffect } from 'react'
 import { api } from 'course-platform/utils/api'
 import type { User } from 'course-platform/utils/types'
 
-type AuthActions = { type: 'LOGIN'; user: User } | { type: 'LOGOUT' }
+// type AuthActions = { type: 'LOGIN'; user: User } | { type: 'LOGOUT' }
 
-type AuthState = {
-  authenticated: boolean | null
-  user: User | null
-}
+// type AuthState = {
+//   authenticated: boolean | null
+//   user: User | null
+// }
 
-type AuthContextType = {
-  authenticated: boolean | null
-  user: User | null
-  dispatch: React.Dispatch<AuthActions>
-  // login(user: User): void
-  // logout(): void
-}
+// type AuthContextType = {
+//   authenticated: boolean | null
+//   user: User | null
+//   dispatch: React.Dispatch<AuthActions>
+//   // login(user: User): void
+//   // logout(): void
+// }
 
 const AuthContext = createContext<AuthContextType>(null!)
 
-type Props = {
-  children: React.ReactNode
-}
+// type Props = {
+//   children: React.ReactNode
+// }
 
 export function AuthProvider({ children }: Props) {
   const [state, dispatch] = useReducer(
@@ -72,7 +72,7 @@ export function AuthProvider({ children }: Props) {
     // logout,
   }
 
-  return <AuthContext.Provider value={context} children={children} />
+  return <AuthContext.Provider value={context}>{children}</AuthContext.Provider>
 }
 
 export function useAuthContext() {

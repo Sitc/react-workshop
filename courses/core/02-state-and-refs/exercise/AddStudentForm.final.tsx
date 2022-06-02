@@ -55,7 +55,7 @@ export function AddStudentForm() {
       <div className="field-wrap">
         <label htmlFor="username">Username</label>
         <input
-          value={getUsername()}
+          value={getUserName}
           disabled={autoUsername}
           onChange={(e) => setField('username', e.target.value)}
           id="username"
