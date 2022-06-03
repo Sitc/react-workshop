@@ -29,7 +29,7 @@ export function AddStudentForm() {
 
       <div>
         <label className="vertical-middle horizontal-spacing">
-          <input type="checkbox" />
+          <input type="checkbox" checked={} onChange={} />
           <span>Auto Username</span>
         </label>
       </div>
