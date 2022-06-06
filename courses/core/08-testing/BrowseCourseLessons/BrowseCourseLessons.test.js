@@ -33,7 +33,6 @@ jest.mock('course-platform/CoursesContext', () => ({
 /**
  * Tests
  */
-
 describe('BrowseCourseLessons', () => {
   it('should render message for no course', () => {
     useCoursesContext.mockReturnValue({

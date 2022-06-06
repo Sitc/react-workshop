@@ -26,9 +26,7 @@ export function BrowseCourseLessons() {
             <Heading>
               Course: <span className="text-blue">{course?.name}</span>
             </Heading>
-            <nav>
-              <PreviousNextCourse courseId={course?.id} />
-            </nav>
+            <nav></nav>
           </div>
           <div className="card spacing">
             <Heading size={2}>Lessons</Heading>
