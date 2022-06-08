@@ -1,11 +1,43 @@
-import React from 'react'
+import * as React from 'react'
 import * as ReactDOM from 'react-dom/client'
 import { FaTrash } from 'react-icons/fa'
 import './styles.scss'
 
-// This is our "entry" file for our build system.
+function Button({ onClick, children }) {
+  return (
+    <button onClick={onClick} type="button" className="button">
+      {children}
+    </button>
+  )
+}
 
-// 1. Use React to make our app
-// 2. "mount" the app to the DOM
+function App() {
+  const courses = [
+    { id: 1, name: 'HTML' }, // 0
+    { id: 2, name: 'css' }, // 1
+    { id: 3, name: 'JS' }, // 2
+  ]
 
-// Let's go
+  function onClick() {
+    console.log('here is the logic for removing a course')
+  }
+
+  return (
+    <div>
+      {courses.map((course) => {
+        return (
+          <div key={course.id}>
+            <h1>{course.name}</h1>
+            <Button onClick={onClick}>
+              <FaTrash />
+              <span>Remove Course</span>
+            </Button>
+          </div>
+        )
+      })}
+    </div>
+  )
+}
+
+const root = ReactDOM.createRoot(document.getElementById('root'))
+root.render(<App />)

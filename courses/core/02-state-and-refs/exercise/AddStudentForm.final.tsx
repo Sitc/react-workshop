@@ -36,6 +36,7 @@ export function AddStudentForm() {
   return (
     <form onSubmit={handleSubmit} className="card spacing">
       <Heading>Add Student</Heading>
+
       <div className="field-wrap">
         <label htmlFor="full-name">Full Name</label>
         <input

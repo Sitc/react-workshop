@@ -12,27 +12,43 @@ import type { CourseWithLessons } from 'course-platform/utils/types'
 // Setting state on unmounted components
 // https://github.com/facebook/react/pull/22114
 
+function useApi<T>(api) {
+  const [results, setResults] = useState<T>(null)
+
+  useEffect(() => {
+    let isCurrent = true
+    api().then((results: T) => {
+      if (isCurrent) {
+        setResults(results)
+      }
+    })
+    return () => {
+      isCurrent = false
+    }
+  }, [api])
+
+  return [results, setResults] as const
+}
+
 export function BrowseCourseLessons() {
-  const courseSlug = useParams().courseSlug!
+  const courseSlug = useParams().courseSlug! // useState
   const [createLessonDialog, setCreateLessonDialog] = useState(false)
 
-  // Course and Lesson Data
-  const [course, setCourse] = useState<CourseWithLessons | null>(null)
+  const getCourse = useCallback(() => api.courses.getCourse(courseSlug), [courseSlug])
+  const [course, setCourse] = useApi<CourseWithLessons | null>(getCourse)
+
   const lessons = course && course.lessons
   const isLoading = course === null
 
-  // Load Course and Lesson Data
-  // api.courses.getCourse(courseSlug)
-
   function removeLesson(lessonId: number) {
-    // if (!lessons) return
-    // api.courses.removeLesson(lessonId).then(() => {
-    //   const i = lessons.findIndex((l) => l.id === lessonId)
-    //   setCourse({
-    //     ...course,
-    //     lessons: [...lessons.slice(0, i), ...lessons.slice(i + 1, lessons.length)],
-    //   })
-    // })
+    if (!lessons) return
+    api.courses.removeLesson(lessonId).then(() => {
+      const i = lessons.findIndex((l) => l.id === lessonId)
+      setCourse({
+        ...course,
+        lessons: [...lessons.slice(0, i), ...lessons.slice(i + 1, lessons.length)],
+      })
+    })
   }
 
   return (

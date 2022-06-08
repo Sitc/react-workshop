@@ -1,5 +1,5 @@
-// import { lazy, Suspense } from 'react'
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { lazy, Suspense } from 'react'
+import { BrowserRouter, Routes, Route, Navigate, useParams } from 'react-router-dom'
 import 'course-platform/styles/all.scss'
 import './styles.scss'
 
@@ -16,12 +16,11 @@ import { BrowseCourses } from './BrowseCourses'
 import { BrowseStudents } from 'course-platform/BrowseStudents'
 import { ChatPage } from 'course-platform/ChatPage'
 
-// Let's Lazy load this
-import BrowseCourseLessons from './BrowseCourseLessons'
+const BrowseCourseLessons = lazy(() => import('./BrowseCourseLessons'))
 
 export function App() {
   return (
-    <BrowserRouter>
+    <Suspense fallback={<div>Loading...</div>}>
       <Routes>
         <Route path="/" element={<WebsiteLayout />}>
           <Route index element={<HomePage />} />
@@ -41,6 +40,6 @@ export function App() {
         </Route>
         <Route path="*" element={<Navigate replace to="/" />} />
       </Routes>
-    </BrowserRouter>
+    </Suspense>
   )
 }
