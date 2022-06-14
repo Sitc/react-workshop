@@ -1,17 +1,44 @@
-import React, { useState, useContext } from 'react'
+import { useState, useContext, createContext } from 'react'
 import * as ReactDOM from 'react-dom/client'
 import './styles.scss'
+
+import Avatar from './Avatar'
 
 /**
  * Context is a little weird in TypeScript so we'll teach it with
  * vanilla JS first. https://reacttraining.com/blog/react-context-with-typescript/
  */
 
+/////// AuthContext.tsx
+
+const Context = createContext()
+
+export function CounterProvider({ children }) {
+  const [count, setCount] = useState(0)
+  const context = {
+    count,
+    setCount,
+  }
+
+  return <Context.Provider value={context}>{children}</Context.Provider>
+}
+
+export function useCounter() {
+  const context = useContext(Context)
+  if (!context) {
+    throw Error('Youre not in the right provider.....')
+  }
+  return context || {}
+}
+
 //////// App.tsx
 
 function App() {
-  const [count, setCount] = useState(0)
-  return <AppLayout count={count} setCount={setCount} />
+  return (
+    <CounterProvider>
+      <AppLayout />
+    </CounterProvider>
+  )
 }
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
@@ -19,19 +46,24 @@ root.render(<App />)
 
 //////// AppLayout.tsx
 
-function AppLayout({ count, setCount }) {
-  return <Page count={count} setCount={setCount} />
+function AppLayout() {
+  return <Page />
 }
 
 //////// Page.tsx
 
-function Page({ count, setCount }) {
-  return <Counter count={count} setCount={setCount} />
+function Page() {
+  return <Counter />
 }
 
 //////// Counter.tsx
 
-function Counter({ count, setCount }) {
+// 1: props
+// 2: context
+
+function Counter() {
+  const { count, setCount } = useCounter()
+
   return (
     <div className="card spacing">
       <h1>Counter</h1>

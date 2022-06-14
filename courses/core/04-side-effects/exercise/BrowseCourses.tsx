@@ -12,11 +12,17 @@ export function BrowseCourses() {
   const [courses, setCourses] = useState<CourseWithLessons[] | null>(null)
   const isLoading = courses === null
 
-  // Write a useEffect to get all courses
-  // HINT: The `PreviousNextCourse.tsx` component has the same one you'll write here
-
-  // api.courses.getAll().then((courses) => {
-  // })
+  // Get All Courses
+  useEffect(() => {
+    let isCurrent = true
+    api.courses.getAll().then((courses) => {
+      if (!isCurrent) return
+      setCourses(courses)
+    })
+    return () => {
+      isCurrent = false
+    }
+  }, [])
 
   function removeCourse(courseId: number) {
     if (!courses) return
