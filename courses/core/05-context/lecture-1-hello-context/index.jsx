@@ -7,11 +7,45 @@ import './styles.scss'
  * vanilla JS first. https://reacttraining.com/blog/react-context-with-typescript/
  */
 
+////// CounterContext.tsx
+
+const CounterContext = React.createContext()
+
+export function CounterProvider({ children }) {
+  const [count, setCount] = useState(0)
+
+  const context = {
+    count,
+    setCount,
+  }
+
+  return <CounterContext.Provider value={context}>{children}</CounterContext.Provider>
+}
+
+export function useCounterContext() {
+  const context = useContext(CounterContext)
+  if (!context) {
+    throw Error('you are not in the right provider....')
+  }
+  return context || {}
+}
+
 //////// App.tsx
 
 function App() {
-  const [count, setCount] = useState(0)
-  return <AppLayout count={count} setCount={setCount} />
+  return (
+    <BrowserRouter>
+      <Redux>
+        <Stripe>
+          <AuthProvider>
+            <CounterProvider>
+              <AppLayout />
+            </CounterProvider>
+          </AuthProvider>
+        </Stripe>
+      </Redux>
+    </BrowserRouter>
+  )
 }
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
@@ -19,19 +53,20 @@ root.render(<App />)
 
 //////// AppLayout.tsx
 
-function AppLayout({ count, setCount }) {
-  return <Page count={count} setCount={setCount} />
-}
+const AppLayout = React.memo(() => {
+  return <Page />
+})
 
 //////// Page.tsx
 
-function Page({ count, setCount }) {
-  return <Counter count={count} setCount={setCount} />
+function Page() {
+  return <Counter />
 }
 
 //////// Counter.tsx
 
-function Counter({ count, setCount }) {
+function Counter() {
+  const { count, setCount } = useCounterContext()
   return (
     <div className="card spacing">
       <h1>Counter</h1>

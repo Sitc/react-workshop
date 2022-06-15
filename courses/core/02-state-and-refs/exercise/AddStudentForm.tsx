@@ -6,12 +6,17 @@ export function AddStudentForm() {
   const [username, setUsername] = useState('')
   const [autoUsername, setAutoUsername] = useState(true)
 
+  const fullNameRef = useRef<HTMLInputElement>(null!)
+
   function handleSubmit(event: React.FormEvent) {
     event.preventDefault()
     console.log({
       fullName,
       username,
     })
+    setFullName('')
+    setUsername('')
+    fullNameRef.current.focus()
   }
 
   return (
@@ -19,17 +24,39 @@ export function AddStudentForm() {
       <Heading>Add Student</Heading>
       <div className="field-wrap">
         <label htmlFor="full-name">Full Name</label>
-        <input id="full-name" type="text" className="form-field" required autoComplete="off" />
+        <input
+          value={fullName}
+          onChange={(e) => setFullName(e.target.value)}
+          id="full-name"
+          type="text"
+          className="form-field"
+          required
+          autoComplete="off"
+          ref={fullNameRef}
+        />
       </div>
 
       <div className="field-wrap">
         <label htmlFor="username">Username</label>
-        <input id="username" type="text" className="form-field" required autoComplete="off" />
+        <input
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          disabled={autoUsername}
+          id="username"
+          type="text"
+          className="form-field"
+          required
+          autoComplete="off"
+        />
       </div>
 
       <div>
         <label className="vertical-middle horizontal-spacing">
-          <input type="checkbox" />
+          <input
+            type="checkbox"
+            checked={autoUsername}
+            onChange={() => setAutoUsername(!autoUsername)}
+          />
           <span>Auto Username</span>
         </label>
       </div>

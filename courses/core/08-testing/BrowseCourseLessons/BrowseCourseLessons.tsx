@@ -10,7 +10,7 @@ export function BrowseCourseLessons() {
   const courseSlug = useParams().courseSlug!
 
   // Data
-  const { getCourse, isLoading, fetchCourses } = useCoursesContext()
+  const { getCourse, isLoading, fetchCourses } = useCoursesContext() // my own version of react-query
   const course = getCourse(courseSlug)
   const lessons = course?.lessons || []
 
