@@ -22,7 +22,7 @@ export function useDelayedCallback(cb) {
         clearTimeout(id)
       }
     }
-    // Let's talk about why we might need to do this
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [callbackValue, ms])
 

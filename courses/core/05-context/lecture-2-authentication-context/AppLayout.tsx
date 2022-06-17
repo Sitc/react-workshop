@@ -11,7 +11,8 @@ export function AppLayout() {
   const { authenticated } = useAuthContext()
 
   if (authenticated === false) {
-    return navigate('/login')
+    navigate('/login')
+    return null
   }
 
   if (authenticated === null) {

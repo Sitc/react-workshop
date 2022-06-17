@@ -11,23 +11,41 @@ type Props = {
 }
 
 export const Login = ({ onSuccess }: Props) => {
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
+  // const [username, setUsername] = useState('')
+  // const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState(null)
   const [loading, setLoading] = useState(false)
 
+  const [state, dispatch] = useReducer(
+    (state, action) => {
+      switch (action.type) {
+        case 'LOGIN':
+          return { ...state, loading: true }
+        case 'LOGIN_FAILED':
+          return { ...state, loading: false, error: action.error }
+        default:
+          return state
+      }
+    },
+    {
+      username: '',
+      password: '',
+    }
+  )
+
   function handleLogin(event: React.FormEvent) {
     event.preventDefault()
-    setLoading(true)
+
+    // setLoading(true)
+    dispatch({ type: 'LOGIN' }) // event or action
     api.auth
-      .login(username, password)
+      .login(state.username, state.password)
       .then((user: User) => {
         onSuccess(user)
       })
       .catch((error) => {
-        setError(error)
-        setLoading(false)
+        dispatch({ type: 'LOGIN_FAILED', error })
       })
   }
 

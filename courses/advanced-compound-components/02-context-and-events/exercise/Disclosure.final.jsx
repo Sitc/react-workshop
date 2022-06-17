@@ -13,6 +13,8 @@ export function Disclosure({ children, onChange, defaultOpen = false, ...props }
     panelId,
     onSelect: () => {
       onChange && onChange()
+      // onChange?.()
+
       setIsOpen(!isOpen)
     },
   }
