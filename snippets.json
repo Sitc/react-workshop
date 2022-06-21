@@ -1,0 +1,162 @@
+{
+  "console.log": {
+    "prefix": "con",
+    "body": ["console.log($0)"]
+  },
+  "css custom properties": {
+    "prefix": "var",
+    "body": ["var(--$0);"]
+  },
+  "const": {
+    "prefix": "const",
+    "body": ["const { $1 } = $0"]
+  },
+  "function": {
+    "prefix": "f",
+    "body": ["function $0() {", "  ", "}"]
+  },
+  "getElementById('')": {
+    "prefix": "el",
+    "body": ["document.getElementById('$0')"]
+  },
+  "React.lazy": {
+    "prefix": "lazy",
+    "body": ["const $1 = React.lazy(() => import('$0'))"]
+  },
+  "Suspense": {
+    "prefix": "suspense",
+    "body": ["<Suspense fallback={<div>loading...</div>}>$0</Suspense>"]
+  },
+  "ReactDOM": {
+    "prefix": "ReactDOM",
+    "body": ["ReactDOM.render(<${0:App} />, document.getElementById('root'))"]
+  },
+  "props": {
+    "prefix": "props",
+    "body": "$0={$0}"
+  },
+  "props2": {
+    "prefix": "props2",
+    "body": "$1={$1} $0={$0}"
+  },
+  "props3": {
+    "prefix": "props3",
+    "body": "$1={$1} $2={$2} $0={$0}"
+  },
+  "useState": {
+    "prefix": "state",
+    "body": ["const [${1}, set${1/(.*)/${1:/capitalize}/}] = useState($0)"]
+  },
+  "useEffect": {
+    "prefix": "effect",
+    "body": ["useEffect(() => {", "  ${0}", "}, [])"]
+  },
+  "React.createElement": {
+    "prefix": "create",
+    "body": ["React.createElement($1, null, $0)"]
+  },
+  "_jsx": {
+    "prefix": "jsx",
+    "body": ["_jsx($0, null)"]
+  },
+  "children-prop-types": {
+    "prefix": "children",
+    "body": ["children: React.ReactNode"]
+  },
+  "reducer -> useReducer": {
+    "prefix": "reducer",
+    "body": [
+      "const [state, dispatch] = useReducer((state, action) => {",
+      "  switch(action.type) {",
+      "    case '${0}': {",
+      "      return { ...state }",
+      "    }",
+      "    default: return state",
+      "  }",
+      "}, {})"
+    ],
+    "description": "reducer -> useReducer"
+  },
+  "dispatch": {
+    "prefix": "dispatch",
+    "body": ["dispatch({ type: '${0}' })"]
+  },
+  "React: Class Component": {
+    "prefix": "class",
+    "body": [
+      "class $0 extends React.Component {",
+      "  state = {}",
+      "",
+      "  render() {",
+      "    return (",
+      "      <div></div>",
+      "    )",
+      "  }",
+      "}"
+    ]
+  },
+  "React: Class Component with Export": {
+    "prefix": "React",
+    "body": [
+      "import React from 'react'",
+      "",
+      "export class $0 extends React.Component {",
+      "  constructor(props) {",
+      "    super(props)",
+      "    this.state = {",
+      "    }",
+      "  }",
+      "",
+      "  render() {",
+      "    return (",
+      "      <div></div>",
+      "    )",
+      "  }",
+      "}",
+      ""
+    ]
+  },
+  "React: Functional Component": {
+    "prefix": "react",
+    "body": [
+      "import React from 'react'",
+      "",
+      "export function $1() {",
+      "  return (",
+      "    $0",
+      "  )",
+      "}",
+      ""
+    ]
+  },
+  "React: Functional Component (TypeScript) with imports": {
+    "prefix": "reactts",
+    "body": [
+      "import React from 'react'",
+      "",
+      "type Props = {}",
+      "",
+      "export const $1: React.FC<Props> = () => {",
+      "  return (",
+      "    $0",
+      "  )",
+      "}"
+    ]
+  },
+  "React: Functional Component (TypeScript)": {
+    "prefix": "fc",
+    "body": ["export const $1: React.FC = () => {", "  return (", "    $0", "  )", "}"]
+  },
+  "componentDidMount": {
+    "prefix": "cdm",
+    "body": ["componentDidMount() {", "  $1", "}"]
+  },
+  "componentDidUpdate": {
+    "prefix": "cdu",
+    "body": ["componentDidUpdate(prevProps) {", "  $0", "}"]
+  },
+  "componentWillUnmount": {
+    "prefix": "cwu",
+    "body": ["componentWillUnmount() {", "  $0", "}"]
+  }
+}

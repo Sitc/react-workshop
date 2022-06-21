@@ -30,7 +30,7 @@ export function App() {
           <Route index element={<Navigate replace to="courses" />} />
           <Route path="courses">
             <Route index element={<BrowseCourses />} />
-            <Route path=":courseSlug" element={<BrowseCourseLessons />} />
+            <Route path=":courseSlug" element={<BrowseCourseLessons />}></Route>
           </Route>
           <Route path="students">
             <Route index element={<BrowseStudents />} />

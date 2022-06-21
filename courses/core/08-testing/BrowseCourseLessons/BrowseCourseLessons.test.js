@@ -25,6 +25,10 @@ jest.mock('course-platform/PreviousNextCourse', () => ({
   PreviousNextCourse: () => null,
 }))
 
+jest.mock('api/utils/path'), () => {
+  getCourse: 
+}
+
 jest.mock('course-platform/CoursesContext', () => ({
   // mock values setup in tests:
   useCoursesContext: jest.fn(),
