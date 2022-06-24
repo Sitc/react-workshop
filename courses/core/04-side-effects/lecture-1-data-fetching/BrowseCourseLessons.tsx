@@ -17,31 +17,31 @@ export function BrowseCourseLessons() {
   const [createLessonDialog, setCreateLessonDialog] = useState(false)
 
   // Course and Lesson Data
-  const [course, setCourse] = useState<CourseWithLessons | null>(null)
+  const [course, setCourses] = useState<any>(null)
   const lessons = course && course.lessons
   const isLoading = course === null
 
   useEffect(() => {
     let isCurrent = true
-    api.courses.getCourse(courseSlug).then((course) => {
+    api().then((results) => {
       if (isCurrent) {
-        setCourse(course)
+        setResults(results)
       }
     })
     return () => {
       isCurrent = false
     }
-  }, [courseSlug])
+  }, [api])
 
   function removeLesson(lessonId: number) {
-    if (!lessons) return
-    api.courses.removeLesson(lessonId).then(() => {
-      const i = lessons.findIndex((l) => l.id === lessonId)
-      setCourse({
-        ...course,
-        lessons: [...lessons.slice(0, i), ...lessons.slice(i + 1, lessons.length)],
-      })
-    })
+    // if (!lessons) return
+    // api.courses.removeLesson(lessonId).then(() => {
+    //   const i = lessons.findIndex((l) => l.id === lessonId)
+    //   setCourse({
+    //     ...course,
+    //     lessons: [...lessons.slice(0, i), ...lessons.slice(i + 1, lessons.length)],
+    //   })
+    // })
   }
 
   return (

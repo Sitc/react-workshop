@@ -17,9 +17,9 @@ export function App() {
   return (
     <Formik initialValues={initialValues} onSubmit={handleSubmit} validate={handleValidation}>
       <Form className="spacing">
-        <FieldEmail />
-        <FieldPassword />
-        {/* <FieldDatePicker /> */}
+        <FieldInput name="email" label="Email" autoComplete="off" />
+        <FieldInput name="password" label="Password" autoComplete="off" />
+
         <button type="submit" className="button">
           Submit
         </button>
@@ -32,39 +32,38 @@ export function App() {
  * Fields
  */
 
-function FieldEmail() {
-  const [field, meta] = useField('email')
-  const id = 'email'
+function FieldWrap({ render, name, label, type = 'text', ...props }) {
+  const [field, meta] = useField(name)
+  const id = useId()
   return (
     <div className="field-wrap spacing-small">
       <label htmlFor={id}>Email</label>
-      <input {...field} id={id} type="email" autoComplete="off" className="form-field" />
+      {render(field, id)}
       {meta.error && <p>{meta.error}</p>}
     </div>
   )
 }
 
-function FieldPassword() {
-  const [field, meta] = useField('password')
-  const id = 'password'
+function FieldInput({ name, label, type = 'text', ...props }) {
   return (
-    <div className="field-wrap spacing-small">
-      <label htmlFor={id}>Password</label>
-      <input {...field} name="password" type="password" className="form-field" />
-      {meta.error && <p>{meta.error}</p>}
-    </div>
+    <FieldWrap
+      name={name}
+      label={label}
+      render={(field, id) => {
+        return <input {...field} {...props} id={id} type={type} className="form-field" />
+      }}
+    />
   )
 }
 
-// function FieldDatePicker() {
+// function FieldPassword() {
+//   const [field, meta] = useField('password')
+//   const id = 'password'
 //   return (
-//     <div className="form-field-icon">
-//       <div className="form-field-icon-input-wrap">
-//         <input type="text" />
-//       </div>
-//       <div className="form-field-icon-wrap">
-//         <BsCalendar3 />
-//       </div>
+//     <div className="field-wrap spacing-small">
+//       <label htmlFor={id}>Password</label>
+//       <input {...field} name="password" type="password" className="form-field" />
+//       {meta.error && <p>{meta.error}</p>}
 //     </div>
 //   )
 // }

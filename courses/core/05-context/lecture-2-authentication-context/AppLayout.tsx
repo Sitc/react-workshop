@@ -1,14 +1,31 @@
+import { useEffect } from 'react'
+import { api } from 'course-platform/utils/api'
 import { Outlet, Link, NavLink, useNavigate } from 'react-router-dom'
 import { Loading } from 'course-platform/Loading'
 import { Logo } from 'course-platform/Logo'
 import { AuthenticatedDropdownMenu } from './AuthenticatedDropdownMenu'
 import { Icon } from 'course-platform/Icon'
 import { useAuthContext } from './AuthContext'
+import type { User } from 'course-platform/utils/types'
 import styles from '../../../../apps/course-platform/AppLayout/AppLayout.module.scss'
 
 export function AppLayout() {
   const navigate = useNavigate()
-  const { authenticated } = useAuthContext()
+  const { authenticated, logout, login } = useAuthContext()
+
+  useEffect(() => {
+    let isCurrent = true
+    api.auth.getAuthenticatedUser().then((user: User) => {
+      if (user && isCurrent) {
+        login(user)
+      } else {
+        logout()
+      }
+    })
+    return () => {
+      isCurrent = false
+    }
+  }, [login, logout])
 
   if (authenticated === false) {
     return navigate('/login')
